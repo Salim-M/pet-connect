@@ -9,7 +9,6 @@ import * as Yup from "yup";
 
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
-import Logo from '../components/common/Logo';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 const LoginSchema = Yup.object().shape({
@@ -35,7 +34,7 @@ const Login = () => {
                 <title>Login | PetConnect</title>
             </Helmet>
             <div className="px-5 py-3">
-                <Logo />
+                <h1 className="font-pacifico text-blue-700 text-2xl">PetConnect</h1>
             </div>
             <main className="flex justify-center items-center h-screen -mt-16">
                 

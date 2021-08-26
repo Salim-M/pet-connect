@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import {Helmet} from 'react-helmet';
 import { register } from '../actions/authActions';
@@ -9,7 +9,6 @@ import * as Yup from "yup";
 
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
-import Logo from '../components/common/Logo';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 const RegisterSchema = Yup.object().shape({
@@ -19,18 +18,7 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const Register = () => {
-    // const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
-    // const history = useHistory();
-
-    // const authLoading = useSelector(state => state.auth.isLoading);
-    // const user = useSelector(state => state.auth.user);
-
-    // useEffect(() => {
-    //     if(user !== null){
-    //         history.push('/');
-    //     }
-    // }, [user, history]);
 
     return (
         <>
@@ -38,7 +26,7 @@ const Register = () => {
                 <title>Register | PetConnect</title>
             </Helmet>
             <div className="px-5 py-3">
-                <Logo />
+                <h1 className="font-pacifico text-blue-700 text-2xl">PetConnect</h1>
             </div>
             <main className="flex justify-center items-center h-screen -mt-16">
                 

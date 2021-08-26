@@ -6,6 +6,7 @@ import App from './App';
 import store from './store';
 
 import './index.css';
+import './styles.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 const Wrapper = () => (

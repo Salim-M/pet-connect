@@ -1,13 +1,14 @@
-import { AUTH_FAILED, AUTH_LOADING, AUTH_SUCCESS, LOGIN_FAILED, LOGIN_SUCCESS, USER_LOADING, UPDATE_USER_AVATAR } from "../actions/types";
+import { AUTH_FAILED, AUTH_LOADING, AUTH_SUCCESS, LOGIN_FAILED, LOGIN_SUCCESS, USER_LOADING, UPDATE_USER } from "../actions/types";
 
+const token = localStorage.getItem('token');
 const initialState = {
-    isLoading: false,
+    isLoading: true,
     isAuthenticated: false,
     user: null,
-    token: localStorage.getItem('token')
+    token
 };
 
-const authReducer =  (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
     switch(action.type){
         case AUTH_LOADING:
         case USER_LOADING:
@@ -19,8 +20,7 @@ const authReducer =  (state = initialState, action) => {
             localStorage.setItem('token', action.payload.access_token);
             return {
                 ...state,
-                token: action.payload.access_token,
-                isAuthenticated: true
+                token: action.payload.access_token
             }
         case LOGIN_SUCCESS:
             return {
@@ -31,7 +31,6 @@ const authReducer =  (state = initialState, action) => {
             }
         case AUTH_FAILED:
         case LOGIN_FAILED:
-        case LOGIN_SUCCESS:
             localStorage.removeItem('token');
             return {
                 ...state,
@@ -41,14 +40,22 @@ const authReducer =  (state = initialState, action) => {
                 isLoading:false
             }
         // User specific actions
-        case UPDATE_USER_AVATAR:
+        case UPDATE_USER:
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    image: action.payload
+                    ...action.payload
                 }
             }
+        // case UPDATE_USER_AVATAR:
+        //     return {
+        //         ...state,
+        //         user: {
+        //             ...state.user,
+        //             image: action.payload
+        //         }
+        //     }
         default:
             return state;
     }
