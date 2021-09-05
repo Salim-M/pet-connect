@@ -3,7 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import {
-  TemplateIcon,
   ViewListIcon,
   CogIcon,
   LocationMarkerIcon,
@@ -23,13 +22,6 @@ const Sidebar = () => {
           </h1>
         </Link>
         <div className="flex flex-col space-y-2">
-          <NavLink
-            to="/user/dashboard"
-            className="px-2.5 py-1.5 rounded-lg shadow-md"
-            activeClassName="bg-blue-700 shadow-lg text-white"
-          >
-            <TemplateIcon className="inline w-4 h-4 -mt-1" />
-          </NavLink>
           <NavLink
             to="/user/listings"
             className="px-2.5 py-1.5 rounded-lg shadow-md"

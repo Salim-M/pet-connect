@@ -2,9 +2,9 @@ import React from "react";
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-const Card = ({ image, name, slug, loading }) => {
+const Card = ({ image, name, loading }) => {
   if (loading) {
     return (
       <div className="rounded-xl shadow-md p-2 bg-white">
@@ -16,20 +16,18 @@ const Card = ({ image, name, slug, loading }) => {
     );
   }
   return (
-    <Link to={`/listings/${slug}`}>
-      <div className="rounded-xl shadow-md p-2 bg-white">
-        <LazyLoadImage
-          effect="blur"
-          src={image}
-          alt={name}
-          wrapperClassName="w-full"
-          className="w-full object-cover h-52 rounded-xl"
-        />
-        <div className="pt-3 pb-2 font-semibold text-xl rounded-t-md text-center">
-          {name}
-        </div>
+    <div className="rounded-xl shadow-md p-2 bg-white">
+      <LazyLoadImage
+        effect="blur"
+        src={image}
+        alt={name}
+        wrapperClassName="w-full"
+        className="w-full object-cover h-52 rounded-xl"
+      />
+      <div className="pt-3 pb-2 font-semibold text-xl rounded-t-md text-center">
+        {name}
       </div>
-    </Link>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ const initialState = {
   isLoading: true,
   page: null,
   hasNext: false,
-  entities: {},
+  listings: {},
 };
 
 const listingsReducer = (state = initialState, action) => {
@@ -17,7 +17,7 @@ const listingsReducer = (state = initialState, action) => {
     case SET_USER_LISTINGS:
       return {
         ...state,
-        entities: action.payload,
+        listings: action.payload,
         isLoading: false,
       };
     default:

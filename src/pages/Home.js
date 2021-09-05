@@ -40,12 +40,9 @@ const Home = () => {
                 const image =
                   listing.images[0] === undefined ? "" : listing.images[0].url;
                 return (
-                  <Card
-                    key={listing.id}
-                    name={listing.name}
-                    slug={listing.slug}
-                    image={image}
-                  />
+                  <Link to={`/listings/${listing.slug}`} key={listing.id}>
+                    <Card name={listing.name} image={image} />
+                  </Link>
                 );
               })}
         </div>

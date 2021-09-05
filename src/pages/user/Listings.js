@@ -8,26 +8,24 @@ import { loadUserListings } from "../../actions/listingsActions";
 
 import Card from "../../components/Card";
 
-const renderCards = (entities) => {
+const renderCards = (data) => {
+  const { entities, result } = data;
   const { listings, images } = entities;
-
-  return Object.entries(listings)
-    .reverse()
-    .map(([key, obj]) => {
-      return (
+  return result.map((key) => {
+    return (
+      <Link to={`/user/listings/${key}/edit`} key={key}>
         <Card
-          key={key}
-          name={obj.name}
-          slug={obj.slug}
-          image={images[obj.images[0]]?.url}
+          name={listings[key].name}
+          image={images[listings[key]["images"][0]].url}
         />
-      );
-    });
+      </Link>
+    );
+  });
 };
 
 const Listings = () => {
   const dispatch = useDispatch();
-  const { entities, isLoading } = useSelector((state) => state.listings);
+  const { listings, isLoading } = useSelector((state) => state.listings);
 
   useEffect(() => {
     dispatch(loadUserListings());
@@ -41,7 +39,7 @@ const Listings = () => {
       <div className="p-4 grid md:p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {isLoading
           ? [1, 2, 3, 4, 5].map((i) => <Card loading key={i} />)
-          : renderCards(entities)}
+          : renderCards(listings)}
       </div>
       <Link
         to="/user/listings/add"

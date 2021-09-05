@@ -1,40 +1,47 @@
-import React from 'react';
+import React from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect, Switch, useRouteMatch } from "react-router-dom"
+import { Redirect, Switch, useRouteMatch } from "react-router-dom";
 
-import PrivateRoute from '../components/PrivateRoute';
+import PrivateRoute from "../components/PrivateRoute";
 import SecondaryLayout from "../layouts/SecondaryLayout";
-import LoadingPage from '../components/common/LoadingPage';
+import LoadingPage from "../components/common/LoadingPage";
 
-import Dashboard from '../pages/user/Dashboard';
-import Profile from '../pages/user/Profile';
-import Listings from '../pages/user/Listings';
-import Address from '../pages/user/Address';
-import AddListing from '../pages/user/AddListing';
-
+import Dashboard from "../pages/user/Dashboard";
+import Profile from "../pages/user/Profile";
+import Listings from "../pages/user/Listings";
+import Address from "../pages/user/Address";
+import AddListing from "../pages/user/AddListing";
+import EditListing from "../pages/user/EditListing";
 
 const UserRoutes = () => {
-    const {isLoading} = useSelector(state => state.auth);
-    const {path} = useRouteMatch();
-    
-    if(isLoading) return <LoadingPage />
+  const { isLoading } = useSelector((state) => state.auth);
+  const { path } = useRouteMatch();
 
-    return (
-        <SecondaryLayout>
-            <Switch>
-                <PrivateRoute path={`${path}/dashboard`} component={Dashboard} exact />
-                <PrivateRoute path={`${path}/listings`} component={Listings} exact />
-                <PrivateRoute path={`${path}/profile`} component={Profile} exact />
-                <PrivateRoute path={`${path}/address`} component={Address} exact />
+  if (isLoading) return <LoadingPage />;
 
-                <PrivateRoute path={`${path}/listings/add`} component={AddListing} exact />
+  return (
+    <SecondaryLayout>
+      <Switch>
+        <PrivateRoute path={`${path}/dashboard`} component={Dashboard} exact />
+        <PrivateRoute path={`${path}/listings`} component={Listings} exact />
+        <PrivateRoute path={`${path}/profile`} component={Profile} exact />
+        <PrivateRoute path={`${path}/address`} component={Address} exact />
 
-                <Redirect from="/user" to="/user/dashboard" exact />
-            </Switch>
-        </SecondaryLayout>
-        
-    )
+        <PrivateRoute
+          path={`${path}/listings/add`}
+          component={AddListing}
+          exact
+        />
+        <PrivateRoute
+          path={`${path}/listings/:key/edit`}
+          component={EditListing}
+          exact
+        />
+        <Redirect from="/user" to="/user/dashboard" exact />
+      </Switch>
+    </SecondaryLayout>
+  );
 };
 
 export default UserRoutes;

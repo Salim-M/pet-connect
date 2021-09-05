@@ -45,7 +45,7 @@ import listingSchema from "../schemas/listingSchema";
 
 const setUserListings = (listings) => ({
   type: SET_USER_LISTINGS,
-  payload: listings.entities,
+  payload: listings,
 });
 
 export const loadUserListings = () => (dispatch) => {
