@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ChevronLeftIcon } from "@heroicons/react/outline";
-import { hideLoading, showLoading } from "react-redux-loading-bar";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
@@ -11,31 +10,27 @@ import PetConnectApi from "../apis/PetConnectApi";
 import Card from "../components/Card";
 
 const Listings = () => {
-  const dispatch = useDispatch();
-
   const [listings, setListings] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
   const fetchListings = () => {
-    dispatch(showLoading());
+    // dispatch(showLoading());
     PetConnectApi.get("/listings", {
       params: {
         page,
       },
-    })
-      .then((res) => {
-        const { data, next_page_url } = res.data;
-        setListings([...listings, ...data]);
+    }).then((res) => {
+      const { data, next_page_url } = res.data;
+      setListings([...listings, ...data]);
 
-        if (next_page_url) {
-          setHasMore(true);
-          setPage(page + 1);
-        } else {
-          setHasMore(false);
-        }
-      })
-      .finally(() => dispatch(hideLoading()));
+      if (next_page_url) {
+        setHasMore(true);
+        setPage(page + 1);
+      } else {
+        setHasMore(false);
+      }
+    });
   };
 
   useEffect(() => {
@@ -67,12 +62,9 @@ const Listings = () => {
           const image =
             listing.images[0] === undefined ? "" : listing.images[0].url;
           return (
-            <Card
-              key={listing.id}
-              name={listing.name}
-              slug={listing.slug}
-              image={image}
-            />
+            <Link to={`/listings/${listing.slug}`}>
+              <Card key={listing.id} name={listing.name} image={image} />
+            </Link>
           );
         })}
       </InfiniteScroll>
