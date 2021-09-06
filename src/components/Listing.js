@@ -76,24 +76,25 @@ const Listing = () => {
             <div>
               <h1 className="text-4xl text-gray-800">{name}</h1>
               <p className="text-gray-500 text-md">
-                {address
+                {address.address1
                   ? `${address.district}, ${address.city}`
                   : "No address provided"}
               </p>
             </div>
             {price && (
               <div>
-                <h2 className="text-4xl inline">2</h2>
+                <h2 className="text-4xl inline">{price}</h2>
                 <span className="text-2xl text-gray-800">$</span>
               </div>
             )}
           </div>
           <div className="py-2 border-t text-gray-500 text-base font-light border-b my-10">
-            {animal.name} · {address && address.address1}
+            {animal.name} {address.address1 && `· ${address.address1}`}
           </div>
           <div className="space-y-4">
             <h2 className="text-3xl text-gray-800">Meet {name}</h2>
             <p
+              className="break-all"
               dangerouslySetInnerHTML={{
                 __html: description ?? "No description provided",
               }}

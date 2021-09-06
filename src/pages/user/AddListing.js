@@ -17,7 +17,7 @@ const ListingSchema = Yup.object().shape({
     .min(4, "Name should be a minimum of 4 characters")
     .required("Required"),
   price: Yup.number().positive().integer(),
-  description: Yup.string(),
+
   animal_id: Yup.string().required("Please select animal type"),
   images: Yup.mixed().required("Please select some images"),
   has_address: Yup.boolean(),

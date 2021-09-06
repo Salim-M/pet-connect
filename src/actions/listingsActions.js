@@ -89,3 +89,26 @@ export const addListing = (values, actions) => (dispatch) => {
       actions.resetForm();
     });
 };
+
+export const editListing = (values, actions) => (dispatch) => {
+  dispatch(showLoading());
+  const { listingId } = values;
+
+  // const data = {};
+  // Object.keys(values).forEach((key) => {
+  //   if (values[key] !== "") data[key] = values[key];
+  // });
+
+  PetConnectApi.post(`/listings/${listingId}`, {
+    ...values,
+    _method: "put",
+  })
+    .then((res) => {
+      toast.success("Listing saved successfully");
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      dispatch(hideLoading());
+      actions.setSubmitting(false);
+    });
+};

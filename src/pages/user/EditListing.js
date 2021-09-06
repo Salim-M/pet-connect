@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet";
 import LoadingPage from "../../components/common/LoadingPage";
@@ -11,17 +11,49 @@ import Input from "../../components/common/Input";
 import Textarea from "../../components/common/Textarea";
 import Button from "../../components/common/Button";
 
+import * as Yup from "yup";
+import { editListing } from "../../actions/listingsActions";
+import { toast } from "react-toastify";
+import { TrashIcon } from "@heroicons/react/outline";
+import { useHistory } from "react-router-dom";
+
+const ListingSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(4, "Name should be a minimum of 4 characters")
+    .required("Required"),
+  price: Yup.number().positive().integer(),
+
+  animal_id: Yup.string().required("Please select animal type"),
+  has_address: Yup.boolean(),
+
+  address1: Yup.string()
+    .min(8, "Address should be a minimum of 8 characters")
+    .when("has_address", { is: true, then: Yup.string().required("Required") }),
+  address2: Yup.string().min(8, "Address should be a minimum of 8 characters"),
+  district: Yup.string()
+    .min(4, "District should be a minimum of 4 characters")
+    .when("has_address", { is: true, then: Yup.string().required("Required") }),
+  city: Yup.string()
+    .min(4, "City should be a minimum of 4 characters")
+    .when("has_address", { is: true, then: Yup.string().required("Required") }),
+
+  description: Yup.string()
+    .min(30, "Description should be a minimum of 30 characters")
+    .required("Required"),
+});
+
 const EditListing = () => {
   const { key } = useParams();
-  const { listings, images } = useSelector(
-    (state) => state.listings.listings.entities
-  );
-  const { name, price, description, animal_id, address } = listings[key];
   const [loading, setLoading] = useState(true);
   const [animals, setAnimals] = useState([]);
 
-  // const [animals, setAnimals] = useState([]);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const entities = useSelector((state) => state.listings.listings.entities);
+  const { listings, images } = entities;
+
+  const { name, price, description, animal_id, address, id } = listings[key];
 
   useEffect(() => {
     PetConnectApi.get("/animals").then((res) => {
@@ -32,11 +64,24 @@ const EditListing = () => {
 
   if (loading) return <LoadingPage hideLogo />;
 
+  const handleListingDelete = () => {
+    PetConnectApi.delete(`/listings/${id}`).then(() => {
+      toast.warning("Listing deleted successfully");
+      history.push("/user/listings");
+    });
+  };
+
   return (
     <>
       <Helmet>
-        <title>Add Listing - My Listings | PetConnect</title>
+        <title>Edit Listing - My Listings | PetConnect</title>
       </Helmet>
+      <button
+        onClick={handleListingDelete}
+        className="fixed bottom-14 right-8 bg-red-600 rounded-full p-3 text-white"
+      >
+        <TrashIcon className="w-5 h-5" />
+      </button>
       <div className="flex flex-col justify-center items-center min-h-screen py-10">
         <div className="space-y-7 px-4 w-full md:w-2/3 lg:w-2/5 mt-auto">
           <div className="flex flex-col space-y-1">
@@ -48,19 +93,19 @@ const EditListing = () => {
           <Formik
             initialValues={{
               name,
+              listingId: key,
               price: price ?? "",
               description,
               animal_id,
-              // images: null,
-              has_address: !!address,
-              address1: address ? address.address1 : "",
-              address2: address ? address.address2 : "",
-              district: address ? address.district : "",
-              city: address ? address.city : "",
+              has_address: address.address1 ? 1 : 0,
+              address1: address.address1 ?? "",
+              address2: address.address2 ?? "",
+              district: address.district ?? "",
+              city: address.city ?? "",
             }}
-            // validationSchema={ListingSchema}
+            validationSchema={ListingSchema}
             onSubmit={(values, actions) => {
-              // dispatch(addListing(values, actions));
+              dispatch(editListing(values, actions));
             }}
           >
             {({ errors, touched, isSubmitting, values, setFieldValue }) => (
@@ -177,29 +222,13 @@ const EditListing = () => {
                     </>
                   ) : null}
                 </div>
-                <Field name="images">
-                  {({ meta }) => (
-                    <div className="mt-3">
-                      <input type="file" multiple />
-                      {meta.touched && meta.error && (
-                        <ErrorMessage msg={meta.error} />
-                      )}
-                    </div>
-                  )}
-                </Field>
-                {/* <div>
-                  <Field name="images" type="file" multiple on />
-                  {errors.images && touched.images ? (
-                    <ErrorMessage msg={errors.images} />
-                  ) : null}
-                </div> */}
                 <Button
                   loading={isSubmitting}
                   type="submit"
                   color="primary"
                   className="w-full mt-6"
                 >
-                  Create
+                  Save
                 </Button>
               </Form>
             )}
