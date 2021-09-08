@@ -34,7 +34,7 @@ const authSuccess = (payload) => ({
   payload,
 });
 
-const authFailed = () => ({
+export const authFailed = () => ({
   type: AUTH_FAILED,
 });
 

@@ -1,17 +1,20 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import {
   ViewListIcon,
   CogIcon,
   LocationMarkerIcon,
+  LogoutIcon,
 } from "@heroicons/react/outline";
 
 import Avatar from "../components/Avatar";
+import { handleLogoutUser } from "../actions/userActions";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
+  const disptach = useDispatch();
 
   return (
     <div className="bg-white py-4 px-2 fixed h-screen shadow-lg secondary_layout__sidebar">
@@ -44,7 +47,14 @@ const Sidebar = () => {
             <CogIcon className="inline w-4 h-4 -mt-1" />
           </NavLink>
         </div>
-        {user !== null && <Avatar name={user.username} image={user.image} />}
+        {user !== null && (
+          <div
+            className="bg-red-600 rounded-full p-2 cursor-pointer"
+            onClick={() => disptach(handleLogoutUser())}
+          >
+            <LogoutIcon className="h-4 w-4 text-white" />
+          </div>
+        )}
       </div>
     </div>
   );
